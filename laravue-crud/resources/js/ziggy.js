@@ -1,0 +1,5 @@
+const Ziggy = { "url": "http:\/\/localhost", "port": null, "defaults": {}, "routes": { "home": { "uri": "\/", "methods": ["GET", "HEAD"] }, "login": { "uri": "login", "methods": ["GET", "HEAD"] }, "logout": { "uri": "logout", "methods": ["POST"] }, "dashboard": { "uri": "dashboard", "methods": ["GET", "HEAD"] }, "livros.create": { "uri": "livro\/create", "methods": ["GET", "HEAD"] }, "livros.store": { "uri": "livro", "methods": ["POST"] }, "livro.lista": { "uri": "livros", "methods": ["GET", "HEAD"] }, "livros.edit": { "uri": "livro\/{livro}\/edit", "methods": ["GET", "HEAD"], "parameters": ["livro"], "bindings": { "livro": "id" } }, "livros.update": { "uri": "livro\/{livro}", "methods": ["PUT"], "parameters": ["livro"], "bindings": { "livro": "id" } }, "storage.local": { "uri": "storage\/{path}", "methods": ["GET", "HEAD"], "wheres": { "path": ".*" }, "parameters": ["path"] } } };
+if (typeof window !== 'undefined' && typeof window.Ziggy !== 'undefined') {
+  Object.assign(Ziggy.routes, window.Ziggy.routes);
+}
+export { Ziggy };

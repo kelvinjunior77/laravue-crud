@@ -1,0 +1,167 @@
+<script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
+import Dashboard from '../Dashboard.vue';
+
+const ano = ref('')
+const erro = ref('')
+
+const validarAno = () => {
+    const anoAtual = new Date().getFullYear()
+
+    if (ano.value === '') {
+        erro.value = ''
+        return
+    }
+
+    const anoNum = parseInt(ano.value)
+
+    if (isNaN(anoNum)) {
+        erro.value = 'Digite um ano válido'
+        return
+    }
+
+    if (anoNum < 1900 || anoNum > anoAtual) {
+        erro.value = `Ano deve estar entre 1900 e ${anoAtual}`
+    } else {
+        erro.value = ''
+    }
+}
+
+const props = defineProps({
+    livro: Object
+});
+
+// Estados do formulário
+const form = useForm({
+    titulo:props.livro.titulo,
+    autor:props.livro.autor,
+    ano_publicacao:props.livro.ano_publicacao,
+    quantidade:props.livro.quantidade,
+    descricao:props.livro.descricao,
+});
+
+
+
+function submit(livro) {
+    
+    router.put('/livro/'+livro,form);
+}
+
+// Limpar formulário
+const resetForm = () => {
+    form.titulo = '';
+    form.autor = '';
+    form.ano_publicacao = '';
+    form.quantidade = 1;
+    form.descricao = '';
+};
+
+
+</script>
+
+<template>
+    <Dashboard></Dashboard>
+
+    <div class="w-full max-w-3/4  mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 mt-10">
+        <!---<h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Cadastrar Livro</h2>--->
+
+        <div v-if="$page.props.flash.success" class="p-4 mb-10 mt-4 text-sm text-green-900 rounded-lg bg-green-200 "
+            role="alert">
+            <span class="font-medium">{{ $page.props.flash.success }}</span> Agora podes gerenciar o livro.
+        </div>
+
+        <div v-if="form.errors.mensagem" class="p-4 mb-10 mt-4 text-sm text-red-900 rounded-lg bg-red-200 "
+            role="alert">
+            <span class="font-medium">{{ form.errors.mensagem }}!</span> Tenta novamente.
+        </div>
+
+        <form @submit.prevent="submit" class="space-y-4">
+            <!-- Dados Pessoais -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Titulo -->
+                <div>
+                    <label for="nome" class="block text-gray-700 text-sm font-bold mb-2">Titulo *</label>
+                    <input v-model="form.titulo" id="titulo" type="text"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                        placeholder="Digite nome do autor">
+
+                    <p v-if="$page.props.errors.titulo" class="mt-1 text-sm text-red-600">
+                        {{ $page.props.errors.titulo }}
+                    </p>
+                </div>
+
+                <!-- Autor -->
+                <div>
+                    <label for="nome" class="block text-gray-700 text-sm font-bold mb-2">Autor *</label>
+                    <input v-model="form.autor" id="autor" type="text"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                        placeholder="Autor do livro">
+                </div>
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- ano  -->
+                <div>
+                    <label for="cpf" class="block text-gray-700 text-sm font-bold mb-2">Ano de lançamento *</label>
+                    <input v-model="form.ano_publicacao" id="ano_publicacao" type="number" min="1900"
+                        :max="new Date().getFullYear()" placeholder="Ex: 2024" @input="validarAno"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500">
+                    <p v-if="erro" class="text-red-500 text-sm">{{ erro }}</p>
+                </div>
+
+                <!-- Quantidade -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Quantidade *</label>
+                    <div class="flex space-x-4">
+                        <input v-model="form.quantidade" id="quantidade" min="1" type="number"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                            placeholder="Quantidade">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contato -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">E-mail *</label>
+
+                    <textarea name="descricao" id="descricao" v-model="form.descricao" rows="3"
+                        class="shadow appearance-none border rounded w-full m   py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 mb-4"
+                        placeholder="Descrição do livro">
+
+          </textarea>
+
+                </div>
+
+            </div>
+
+            <!-- Botões -->
+            <div class="flex items-center justify-between mt-8">
+                <button type="button" @click="resetForm" disabled
+                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Limpar
+                </button>
+
+                <button type="submit"
+                    class="bg-blue-500 cursor-pointer ml-3 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"> 
+                        Cadastrar
+                    
+                </button>
+            </div>
+        </form>
+    </div>
+</template>
+
+
+<style scoped>
+.form-radio:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+}
+
+.form-checkbox:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+</style>
