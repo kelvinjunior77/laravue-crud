@@ -13,7 +13,7 @@ O objetivo é incentivar o uso dessas duas tecnologias juntas, aproveitando o me
 - [Pinia](https://pinia.vuejs.org/) – Gerenciamento de estado moderno para Vue
 - [Tailwind CSS](https://tailwindcss.com/) – Estilização rápida e responsiva
 - [Ziggy](https://github.com/tighten/ziggy) – Rotas do Laravel acessíveis no Vue
-- MySQL ou PostgreSQL – Banco de dados
+- MySQL – Banco de dados
 
 ---
 
