@@ -30,7 +30,7 @@ class LivroController extends Controller
 
         $livros = $query->paginate(5)->withQueryString();
 
-        return inertia('Livros/LivroLista', [
+        return Inertia('Livros/LivroLista', [
             'livros' => $livros,
             'filters' => $request->only('search'),
             // passa o filtro atual pro Vue
@@ -44,7 +44,7 @@ class LivroController extends Controller
     public function create()
     {
 
-        return inertia('Livros/LivroCreate');
+        return Inertia('Livros/LivroCreate');
     }
 
     /**
@@ -83,7 +83,7 @@ class LivroController extends Controller
     public function edit(Livro $livro)
     {
 
-        return inertia('Livros/LivroEdit', [
+        return Inertia('Livros/LivroEdit', [
             'livros' => $livro,
         ]);
     }
@@ -113,7 +113,7 @@ class LivroController extends Controller
         try {
             $livro->delete();
 
-            return redirect()->route('livro.lista')
+            return redirect()->route('livros.index')
                 ->with('success', 'Livro excluído com sucesso!');
         } catch (\Exception $e) {
             return back()

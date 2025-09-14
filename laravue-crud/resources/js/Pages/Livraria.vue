@@ -23,7 +23,7 @@
             </div>
             <div>
               <p class="text-sm font-medium text-gray-600">Total de Livros</p>
-              <p class="text-2xl font-bold text-gray-900">21</p>
+              <p class="text-2xl font-bold text-gray-900">{{ totalLivros }}</p>
             </div>
           </div>
           <div class="mt-4">
@@ -31,7 +31,7 @@
               <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
               </svg>
-              +12% desde o mês passado
+              cadastrado
             </div>
           </div>
         </div>
@@ -46,7 +46,7 @@
             </div>
             <div>
               <p class="text-sm font-medium text-gray-600">Total de Usuários</p>
-              <p class="text-2xl font-bold text-gray-900">21</p>
+              <p class="text-2xl font-bold text-gray-900">{{totalUsuarios}}</p>
             </div>
           </div>
           <div class="mt-4">
@@ -147,6 +147,10 @@ import { ref, reactive } from 'vue'
 import Dashboard from './Dashboard.vue'
 import { Link, Head} from '@inertiajs/vue3'
 
+defineProps({
+  totalLivros: Number,
+  totalUsuarios: Number
+})
 </script>
 
 <style scoped>
